@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="QuizTemplate" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="QuizId" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select *
+	from quiztransactiontable qtt
+		inner join quiztable qut on qut.QuizId = qtt.QuizId
+	where qtt.QuizId = 1
+order by CopyNo]]>
+	</queryString>
+	<field name="QuizTransactionId" class="java.lang.Long"/>
+	<field name="QuestionId" class="java.lang.Long"/>
+	<field name="CopyNo" class="java.lang.Long"/>
+	<field name="RowNumPerCopy" class="java.lang.Long"/>
+	<field name="QuizId" class="java.lang.Long"/>
+	<field name="QuestionNo" class="java.lang.Long"/>
+	<field name="Question" class="java.lang.String"/>
+	<field name="QuestionType" class="java.lang.String"/>
+	<field name="Option1" class="java.lang.String"/>
+	<field name="Option2" class="java.lang.String"/>
+	<field name="Option3" class="java.lang.String"/>
+	<field name="Option4" class="java.lang.String"/>
+	<field name="Option5" class="java.lang.String"/>
+	<field name="Option6" class="java.lang.String"/>
+	<field name="Option7" class="java.lang.String"/>
+	<field name="Option8" class="java.lang.String"/>
+	<field name="Answer" class="java.lang.String"/>
+	<field name="GroupedWith" class="java.lang.Long"/>
+	<field name="DateCreated" class="java.sql.Timestamp"/>
+	<field name="CourseId" class="java.lang.Long"/>
+	<field name="Title" class="java.lang.String"/>
+	<field name="Description" class="java.lang.String"/>
+	<group name="CopyNo">
+		<groupExpression><![CDATA[$F{CopyNo}]]></groupExpression>
+		<groupHeader>
+			<band height="95">
+				<textField>
+					<reportElement x="0" y="0" width="555" height="23"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Title}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="23" width="555" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Description}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Transparent" x="55" y="64" width="500" height="20" forecolor="#000000" backcolor="#FFFFFF">
+						<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single" leftIndent="20" rightIndent="20"/>
+					</textElement>
+					<text><![CDATA[Name: ____________________________]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="12">
+				<break>
+					<reportElement x="0" y="11" width="555" height="1"/>
+				</break>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<textField>
+				<reportElement x="79" y="0" width="476" height="32"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+					<paragraph leftIndent="20" rightIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Question}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="79" height="32"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="Times New Roman" size="12"/>
+					<paragraph leftIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RowNumPerCopy}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="80">
+			<printWhenExpression><![CDATA[$F{QuestionType}.equalsIgnoreCase("MCQ")]]></printWhenExpression>
+			<textField>
+				<reportElement x="79" y="0" width="476" height="20">
+					<printWhenExpression><![CDATA[$F{Option1} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+					<paragraph leftIndent="20" rightIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA["A.  "+ $F{Option1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="79" y="20" width="476" height="20">
+					<printWhenExpression><![CDATA[$F{Option2} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+					<paragraph leftIndent="20" rightIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA["B.   "+$F{Option2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="79" y="40" width="476" height="20">
+					<printWhenExpression><![CDATA[$F{Option3} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+					<paragraph leftIndent="20" rightIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA["C.   "+$F{Option3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="79" y="60" width="476" height="20">
+					<printWhenExpression><![CDATA[$F{Option4} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+					<paragraph leftIndent="20" rightIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA["D.   "+$F{Option4}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="83">
+			<printWhenExpression><![CDATA[$F{Option5}!=null]]></printWhenExpression>
+			<textField>
+				<reportElement x="79" y="3" width="476" height="20">
+					<printWhenExpression><![CDATA[$F{Option5} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+					<paragraph leftIndent="20" rightIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA["E.   "+$F{Option5}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="79" y="23" width="476" height="20">
+					<printWhenExpression><![CDATA[$F{Option6} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+					<paragraph leftIndent="20" rightIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA["F.   "+$F{Option6}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="79" y="43" width="476" height="20">
+					<printWhenExpression><![CDATA[$F{Option7} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+					<paragraph leftIndent="20" rightIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA["G.   "+$F{Option7}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="79" y="63" width="476" height="20">
+					<printWhenExpression><![CDATA[$F{Option8} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+					<paragraph leftIndent="20" rightIndent="20"/>
+				</textElement>
+				<textFieldExpression><![CDATA["H.   "+$F{Option8}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

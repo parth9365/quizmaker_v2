@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>QuizMaker</display-name>
+  <welcome-file-list>
+    <welcome-file>/jsp/index.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>UserController</display-name>
+    <servlet-name>UserController</servlet-name>
+    <servlet-class>com.quiz.controllers.UserController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserController</servlet-name>
+    <url-pattern>/servlet/UserController</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CourseController</display-name>
+    <servlet-name>CourseController</servlet-name>
+    <servlet-class>com.quiz.controllers.CourseController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CourseController</servlet-name>
+    <url-pattern>/servlet/CourseController</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>QuizController</display-name>
+    <servlet-name>QuizController</servlet-name>
+    <servlet-class>com.quiz.controllers.QuizController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>QuizController</servlet-name>
+    <url-pattern>/servlet/QuizController</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>QuestionController</display-name>
+    <servlet-name>QuestionController</servlet-name>
+    <servlet-class>com.quiz.controllers.QuestionController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>QuestionController</servlet-name>
+    <url-pattern>/servlet/QuestionController</url-pattern>
+  </servlet-mapping>
+</web-app>
