@@ -29,6 +29,7 @@ public class QuestionManager {
 	public static Question createEntity(HttpServletRequest request){
 		Question q = new Question();
 		
+		q.setQuestionId(Long.valueOf(request.getParameter("questionId")));
 		//q.setQuizId(Long.valueOf(request.getParameter("quizId")));
 		//q.setQuestionNo(Long.valueOf(request.getParameter("questionNo")));
 		q.setQuestion(request.getParameter("question"));
@@ -52,7 +53,6 @@ public class QuestionManager {
 		}else{
 			q.setIsGrouped("0");
 		}
-		q.setCopyQuestionId(null);
 		
 		return q;
 	}
@@ -207,6 +207,11 @@ public class QuestionManager {
 			where += " and qzt.QuizId = "+request.getParameter("quizId");
 		}
 		
+		if(!StringUtils.isEmpty(request.getParameter("questionText"))){
+			where += " and qt.Question like '%"+request.getParameter("questionText")+"%'";
+			
+		}
+		
 		return where;
 	}
 
@@ -237,7 +242,7 @@ public class QuestionManager {
 		
 		question.setQuestionId(Long.valueOf(questionId));
 		//question.setQuizId(Long.valueOf(rs.get(0, "QuizId")));
-		question.setQuestionNo(Long.valueOf(rs.get(0, "QuestionNo")));
+//		question.setQuestionNo(Long.valueOf(rs.get(0, "QuestionNo")));
 		question.setQuestion(rs.get(0, "Question"));
 		question.setQuestionType(rs.get(0, "QuestionType"));
 		question.setQuestionTypeForDisplay(rs.get(0, "QuestionTypeForDisplay"));		
@@ -253,7 +258,7 @@ public class QuestionManager {
 		question.setDoNotShuffuleOption(rs.get(0, "DoNotShuffuleOption"));
 		question.setGroupedId(rs.get(0, "GroupedWith"));
 		question.setIsGrouped(rs.get(0, "IsGrouped"));
-		question.setCopyQuestionId(rs.get(0, "copyQuestionId"));
+//		question.setCopyQuestionId(rs.get(0, "copyQuestionId"));
 		
 		return question;
 	}
@@ -295,6 +300,14 @@ public class QuestionManager {
 	public static void deleteQuestionFromQuiz(String questionId, String quizId) throws ClassNotFoundException, SQLException, Exception {
 		String query = "delete from questionquiztable where QuestionId = "+questionId+" and QuizId = "+quizId;
 		Query.executeDelete(query);
+	}
+
+	public static void groupQuestions(String questionId, String parentQuestionId) throws ClassNotFoundException, SQLException, Exception {
+		String query = "update questiontable set GroupedWith = "+questionId+", IsGrouped = 1 where QuestionId = "+parentQuestionId;
+		Query.executeUpdate(query);
+		
+		query = "update questiontable set GroupedWith = "+parentQuestionId+", IsGrouped = 1 where QuestionId = "+questionId;
+		Query.executeUpdate(query);
 	}
 
 }

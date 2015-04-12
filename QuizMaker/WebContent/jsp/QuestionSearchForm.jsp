@@ -87,6 +87,13 @@
 						</div>
 					</div>
 					
+					<div class="row">
+						<label>Question Text:</label>
+						<div class="inputs">
+							<input name="questionText" class="form-control" type="text" id="questionText">
+						</div>
+					</div>
+					
 					<input type="hidden" name="from" value="${param.from }" />
 					
 					<div class="row">

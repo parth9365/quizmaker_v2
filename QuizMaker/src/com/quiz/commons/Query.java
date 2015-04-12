@@ -44,10 +44,10 @@ public class Query {
 		
 		try {
 			new ProjectConfig(); //to initlise the log file in the constructer of projectConfig
-//			String outfile = "/home/newuser/log/Log" +'_'+ new java.util.Date().toString().replace(' ','_').replace(':','-') + ".txt";
-//	
-//			fout=new PrintStream(new FileOutputStream(outfile, true));
-//			System.setOut(fout);
+			String outfile = "/home/newuser/log/Log" +'_'+ new java.util.Date().toString().replace(' ','_').replace(':','-') + ".txt";
+	
+			fout=new PrintStream(new FileOutputStream(outfile, true));
+			System.setOut(fout);
 		}catch(Exception e){
 			e.printStackTrace(System.out);
 			throw e;

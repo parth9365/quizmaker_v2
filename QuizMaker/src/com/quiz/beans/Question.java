@@ -4,6 +4,8 @@ public class Question {
 	private long questionId;
 //	private long quizId;
 	private long questionNo;
+	private String questionToken;
+	
 	private String question;
 	private String questionType;
 	private String questionTypeForDisplay;
@@ -40,6 +42,14 @@ public class Question {
 	public void setQuestionNo(long questionNo) {
 		this.questionNo = questionNo;
 	}
+	
+	public String getQuestionToken() {
+		return questionToken;
+	}
+	public void setQuestionToken(String questionToken) {
+		this.questionToken = questionToken;
+	}
+	
 	public String getQuestion() {
 		return question;
 	}

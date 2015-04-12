@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang.StringUtils;
 
 import com.quiz.beans.Question;
 import com.quiz.managers.CourseManager;
@@ -63,11 +64,43 @@ public class QuestionController extends HttpServlet {
 			if(action.equalsIgnoreCase("addQuestionToQuiz"))		addQuestionToQuizHandler(request, response);
 			if(action.equalsIgnoreCase("addQuestionToQuizPopup"))	addQuestionToQuizPopupHandler(request, response);
 			if(action.equalsIgnoreCase("addQuestionToQuizSubmit"))	addQuestionToQuizSubmitHandler(request, response);
+			if(action.equalsIgnoreCase("linkQuestion"))				linkQuestionHandler(request, response);
+			if(action.equalsIgnoreCase("linkQuestionSubmit"))		linkQuestionSubmitHandler(request, response);
+			if(action.equalsIgnoreCase("getQuestionDetail"))		getQuestionDetailHandler(request, response);
 			
 			
 		}catch(Exception e){
 			handleError(e);
 		}
+	}
+
+	private void linkQuestionSubmitHandler(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException, Exception {
+		String questionId = request.getParameter("questionId");
+		String parentQuestionId = request.getParameter("parentQuestionId");
+		
+		QuestionManager.groupQuestions(questionId, parentQuestionId);
+		
+		PrintWriter out = response.getWriter();
+		out.write("success");
+	}
+
+	private void getQuestionDetailHandler(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException, Exception {
+		String questionId = request.getParameter("questionId");
+		Question question = QuestionManager.createEntity(questionId);
+		
+		PrintWriter out = response.getWriter();
+		out.print(question.getQuestionId()+ " - "+ question.getQuestion());
+	}
+
+	private void linkQuestionHandler(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException, Exception {
+		String parentQuestionId = request.getParameter("questionId");
+		Question parentQuestion = QuestionManager.createEntity(parentQuestionId);
+		request.setAttribute("parentQuestion", parentQuestion);
+		
+		List<Map<String,Object>> questions = QuestionManager.getSearchResult(request);
+		request.setAttribute("questions", questions);
+		
+		forward("/jsp/GroupQuestionPopup.jsp", request, response);
 	}
 
 	private void addQuestionToQuizPopupHandler(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException, Exception {
@@ -158,7 +191,12 @@ public class QuestionController extends HttpServlet {
 
 	private void addEditSubmitHandler(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException, Exception {
 		Question q = QuestionManager.createEntity(request);
-		QuestionManager.saveQuestion(q);
+		long questionId = QuestionManager.saveQuestion(q);
+		
+		String quizId = request.getParameter("quizId");
+		if(StringUtils.isNotEmpty(quizId)){
+			QuestionManager.addQuestionToQuiz(String.valueOf(questionId), quizId);
+		}
 		response.sendRedirect("UserController?action=dashboard");
 	}
 
@@ -169,17 +207,17 @@ public class QuestionController extends HttpServlet {
 	}
 
 	private void addEditFormHandler(HttpServletRequest request, HttpServletResponse response)  throws ClassNotFoundException, SQLException, Exception {
-		//List<Map<String, Object>> quizes = QuizManager.getSearchResult(request);
-		//request.setAttribute("quizes", quizes);
-		/*String quizId = request.getParameter("quizId"); 
+		List<Map<String, Object>> quizes = QuizManager.getSearchResult(request);
+		request.setAttribute("quizes", quizes);
+		String quizId = request.getParameter("quizId"); 
 		if(quizId != null){
-			int maxQuizNo = 0;
-			maxQuizNo = QuestionManager.getMaxQuestionNo(quizId) + 1;
+			//int maxQuizNo = 0;
+			//maxQuizNo = QuestionManager.getMaxQuestionNo(quizId) + 1;
 			List<Map<String, Object>> questions = QuestionManager.getSearchResult(request);
 
-			request.setAttribute("maxQuizNo", maxQuizNo);
+			//request.setAttribute("maxQuizNo", maxQuizNo);
 			request.setAttribute("questions", questions);
-		}*/
+		}
 		forward("/jsp/QuestionAddEditForm.jsp", request, response);
 	}
 

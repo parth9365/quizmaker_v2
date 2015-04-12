@@ -53,7 +53,7 @@ public class QuizManager {
 	}
 
 	public static void generateRandomQuiz(String courseId, String quizId, int noOfCopy) throws ClassNotFoundException, SQLException, Exception {
-		DbResultset que = Query.executeSelect("select * from questiontable where QuizId = "+quizId);
+		DbResultset que = Query.executeSelect("select distinct qt.* from questiontable qt left join questionquiztable qqt on qqt.QuestionId = qt.QuestionId where qqt.QuizId = "+quizId);
 		int rowCount = que.getRowCount();
 		
 		deleteQuizTransactionForQuizId(quizId);
@@ -66,8 +66,8 @@ public class QuizManager {
 				Question q = new Question();
 				int randomNo = rn.getNextRandomNumber();
 				q.setQuestionId(Long.valueOf(que.get(randomNo, "QuestionId")));
-				q.setQuizId(Long.valueOf(que.get(randomNo, "QuizId")));
-				q.setQuestionNo(Long.valueOf(que.get(randomNo, "QuestionNo")));
+//				q.setQuizId(Long.valueOf(que.get(randomNo, "QuizId")));
+//				q.setQuestionNo(Long.valueOf(que.get(randomNo, "QuestionNo")));
 				q.setQuestion(CommonFuncs.dbStringValue(que.get(randomNo, "Question")));
 				q.setQuestionType(CommonFuncs.dbStringValue(que.get(randomNo, "QuestionType")));
 				q.setQuestionTypeForDisplay(CommonFuncs.dbStringValue(que.get(randomNo, "QuestionTypeForDisplay")));
@@ -81,21 +81,34 @@ public class QuizManager {
 				q.setOption8(CommonFuncs.dbStringValue(que.get(randomNo, "Option8")));
 				q.setAnswer(CommonFuncs.dbStringValue(que.get(randomNo, "Answer")));
 				q.setDoNotShuffuleOption(CommonFuncs.dbStringValue(que.get(randomNo, "DoNotShuffuleOption")));
+				
 				q.setGroupedId("".equals(que.get(randomNo, "GroupedWith"))?null:que.get(randomNo, "GroupedWith"));
 				q.setIsGrouped(que.get(randomNo, "IsGrouped"));
 				
 				//logic to insert only one from grouped question
 				if(!q.getIsGrouped().equals("1")){
-					insertQuizTransaction(q, ++i, noOfCopy, groupMap);
+					
+					insertQuizTransaction(q, ++i, noOfCopy, groupMap, quizId);
+					
 				}else{
-					long questionNo = q.getGroupedId() != null ? Long.valueOf(q.getGroupedId()) : q.getQuestionNo();
-					if(groupMap.get(questionNo) != null){
-						groupMap.get(questionNo).add(q);
-						groupMap.put(new Long(questionNo), groupMap.get(questionNo));
-					}else{
+					
+//					long questionNo = Long.valueOf(q.getGroupedId());
+					
+					if(groupMap.get(Long.valueOf(q.getGroupedId())) != null){
+						
+						groupMap.get(Long.valueOf(q.getGroupedId())).add(q);
+						//groupMap.put(Long.valueOf(q.getGroupedId()), groupMap.get(q.getGroupedId()));
+						
+					} else if(groupMap.get(q.getQuestionId())!=null){
+						
+						groupMap.get(q.getQuestionId()).add(q);
+						//groupMap.put(Long.valueOf(q.getQuestionId()), groupMap.get(q.getQuestionId()));
+						
+					} else{
+						
 						List<Question> l = new ArrayList<Question>();
 						l.add(q);
-						groupMap.put(new Long(questionNo), l);
+						groupMap.put(Long.valueOf(q.getQuestionId()), l);
 					}
 				}
 			}
@@ -106,7 +119,7 @@ public class QuizManager {
 			    List<Question> questions = entry.getValue();
 			    Question q = questions.get(new Random().nextInt(questions.size()));
 			    q.setIsGrouped("0");
-			    insertQuizTransaction(q, ++i,noOfCopy, null);
+			    insertQuizTransaction(q, ++i,noOfCopy, null, quizId);
 			}
 		}
 		
@@ -117,7 +130,7 @@ public class QuizManager {
 		Query.executeDelete("delete from quiztransactiontable where QuizId = "+quizId);
 	}
 
-	public static void insertQuizTransaction(Question q, int rowNum, int copyNo, Map<Long, List<Question>> groupMap) throws ClassNotFoundException, SQLException, Exception{
+	public static void insertQuizTransaction(Question q, int rowNum, int copyNo, Map<Long, List<Question>> groupMap, String quizId) throws ClassNotFoundException, SQLException, Exception{
 		if(!q.getIsGrouped().equals("1")){
 			RandomNumber r1 = new RandomNumber(4);
 			RandomNumber r2 = new RandomNumber(4);
@@ -126,7 +139,7 @@ public class QuizManager {
 					query.append(q.getQuestionId()+", ");
 					query.append(copyNo +", ");
 					query.append(rowNum +", ");
-					query.append(q.getQuizId()+", ");
+					query.append(quizId+", ");
 					query.append(q.getQuestionNo()+", ");
 					query.append(q.getQuestion()+", ");
 					query.append(q.getQuestionType()+", ");
