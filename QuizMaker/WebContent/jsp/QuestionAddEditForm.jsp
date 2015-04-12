@@ -142,8 +142,18 @@
 						</div>
 					</div>
 					
-					
-					<c:if test="${param.quizId ne null }">
+					<div class="row">
+						<label>Quiz:</label>
+						<div class="inputs"> 
+							<select id="quizId" name="quizId" style="width: 100%;">
+						       <option value="">--select--</option>
+								<c:forEach items="${quizes }" var="quiz">
+									<option value="${quiz.QuizId }" >${quiz.Title }</option>
+								</c:forEach>
+							</select>							
+						</div>
+					</div>
+					<%-- <c:if test="${param.quizId ne null }">
 					<div class="row">
 						<label>Grouped With:</label>
 						<div class="inputs">
@@ -155,7 +165,7 @@
 							</select>
 						</div>
 					</div>
-					</c:if>
+					</c:if> --%>
 					
 					<div class="row">
 						<div class="inputs">

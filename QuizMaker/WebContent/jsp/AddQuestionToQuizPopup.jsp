@@ -127,6 +127,7 @@ function fillQuizDropdown(obj) {
 			url : "QuizController?action=getQuizForCourse",
 			data: {
 				"courseId": courseId
+				
 			},
 			method: 'post',	
 			success : function(data) {

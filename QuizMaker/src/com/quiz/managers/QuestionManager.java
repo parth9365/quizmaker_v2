@@ -207,6 +207,11 @@ public class QuestionManager {
 			where += " and qzt.QuizId = "+request.getParameter("quizId");
 		}
 		
+		if(!StringUtils.isEmpty(request.getParameter("questionText"))){
+			where += " and qt.Question like '%"+request.getParameter("questionText")+"%'";
+			
+		}
+		
 		return where;
 	}
 

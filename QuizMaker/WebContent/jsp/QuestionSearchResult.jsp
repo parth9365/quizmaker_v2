@@ -15,11 +15,12 @@
 				<display:column title="" >
 					<input type='checkbox' name='questionIdChkbox' class="chkQue" value='${question.QuestionId }' />
 				</display:column>
-			    <display:column property="QuestionNo" title="Question No" sortable="true" headerClass="sortable" />
+				
+			    <%-- <display:column property="QuestionNo" title="Question No" sortable="true" headerClass="sortable" /> --%>
 			    <display:column property="Question" title="Question" sortable="true" headerClass="sortable" />
 			    <display:column property="QuestionTypeForDisplay" title="Type" sortable="true" headerClass="sortable" />
-			    <display:column property="GroupedWith" title="Linked Question" sortable="true" headerClass="sortable" style="width: 10%;" />
-			    <display:column property="Title" title="Quiz" sortable="true" headerClass="sortable"  />
+			    <%-- <display:column property="GroupedWith" title="Linked Question" sortable="true" headerClass="sortable" style="width: 10%;" />
+			    <display:column property="Title" title="Quiz" sortable="true" headerClass="sortable"  /> --%>
 			    <display:column title="Action" paramId="QuestionId" style="width: 100px;">
 			    	<a href="QuestionController?action=edit&questionId=${question.QuestionId }" title="Edit Question"><img src="../img/edit-icon.png" height="20px;" width="20px;" /></a> &nbsp;&nbsp;
 			    	<a onclick="deleteQuestion(${question.QuestionId }, '${param.quizId }');" style="cursor: pointer;" title="Delete Question"><img src="../img/delete-icon.png" height="20px;" width="20px;" /></a>&nbsp;&nbsp;

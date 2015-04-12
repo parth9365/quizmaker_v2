@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta http-equiv="imagetoolbar" content="no" />
-<title>admin05</title>
+<title>QuizMaker</title>
 <link media="screen" rel="stylesheet" type="text/css"
 	href="../css/login.css" />
 <!--[if lte IE 6]><link media="screen" rel="stylesheet" type="text/css" href="css/login-ie.css" /><![endif]-->

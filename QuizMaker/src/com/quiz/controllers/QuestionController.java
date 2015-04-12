@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang.StringUtils;
 
 import com.quiz.beans.Question;
 import com.quiz.managers.CourseManager;
@@ -158,7 +159,12 @@ public class QuestionController extends HttpServlet {
 
 	private void addEditSubmitHandler(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException, Exception {
 		Question q = QuestionManager.createEntity(request);
-		QuestionManager.saveQuestion(q);
+		long questionId = QuestionManager.saveQuestion(q);
+		
+		String quizId = request.getParameter("quizId");
+		if(StringUtils.isNotEmpty(quizId)){
+			QuestionManager.addQuestionToQuiz(String.valueOf(questionId), quizId);
+		}
 		response.sendRedirect("UserController?action=dashboard");
 	}
 
@@ -169,17 +175,17 @@ public class QuestionController extends HttpServlet {
 	}
 
 	private void addEditFormHandler(HttpServletRequest request, HttpServletResponse response)  throws ClassNotFoundException, SQLException, Exception {
-		//List<Map<String, Object>> quizes = QuizManager.getSearchResult(request);
-		//request.setAttribute("quizes", quizes);
-		/*String quizId = request.getParameter("quizId"); 
+		List<Map<String, Object>> quizes = QuizManager.getSearchResult(request);
+		request.setAttribute("quizes", quizes);
+		String quizId = request.getParameter("quizId"); 
 		if(quizId != null){
-			int maxQuizNo = 0;
-			maxQuizNo = QuestionManager.getMaxQuestionNo(quizId) + 1;
+			//int maxQuizNo = 0;
+			//maxQuizNo = QuestionManager.getMaxQuestionNo(quizId) + 1;
 			List<Map<String, Object>> questions = QuestionManager.getSearchResult(request);
 
-			request.setAttribute("maxQuizNo", maxQuizNo);
+			//request.setAttribute("maxQuizNo", maxQuizNo);
 			request.setAttribute("questions", questions);
-		}*/
+		}
 		forward("/jsp/QuestionAddEditForm.jsp", request, response);
 	}
 

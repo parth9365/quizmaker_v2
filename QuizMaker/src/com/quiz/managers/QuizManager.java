@@ -66,7 +66,7 @@ public class QuizManager {
 				Question q = new Question();
 				int randomNo = rn.getNextRandomNumber();
 				q.setQuestionId(Long.valueOf(que.get(randomNo, "QuestionId")));
-				q.setQuizId(Long.valueOf(que.get(randomNo, "QuizId")));
+//				q.setQuizId(Long.valueOf(que.get(randomNo, "QuizId")));
 				q.setQuestionNo(Long.valueOf(que.get(randomNo, "QuestionNo")));
 				q.setQuestion(CommonFuncs.dbStringValue(que.get(randomNo, "Question")));
 				q.setQuestionType(CommonFuncs.dbStringValue(que.get(randomNo, "QuestionType")));
@@ -126,7 +126,7 @@ public class QuizManager {
 					query.append(q.getQuestionId()+", ");
 					query.append(copyNo +", ");
 					query.append(rowNum +", ");
-					query.append(q.getQuizId()+", ");
+//					query.append(q.getQuizId()+", ");
 					query.append(q.getQuestionNo()+", ");
 					query.append(q.getQuestion()+", ");
 					query.append(q.getQuestionType()+", ");

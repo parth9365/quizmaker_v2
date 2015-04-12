@@ -63,7 +63,7 @@
 												<li><a href="QuestionController?action=importForm">Import Questions</a></li>
 												<li><a href="QuestionController?action=searchForm">Search Question</a></li>	
 												<li><a href="QuestionController?action=addEditForm">Add New Question</a></li>
-												<li><a href="QuestionController?action=addQuestionToQuiz">Add Questions to Quiz</a></li>
+												<!-- <li><a href="QuestionController?action=addQuestionToQuiz">Add Questions to Quiz</a></li> -->
 											</ul>
 										</div>
 									</dd>
